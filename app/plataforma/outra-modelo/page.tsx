@@ -283,34 +283,11 @@ export default function Plataforma() {
         display: "flex", alignItems: "center", justifyContent: "space-between",
         gap: "16px",
       }}>
-        {/* LOGO — substitua pelo seu componente de logo */}
         <div style={{
           display: "flex", alignItems: "center", gap: "12px",
-          minWidth: "160px",
+          minWidth: "160px", height: "42px",
         }}>
-          {/* ↓↓↓ INSIRA SUA LOGO AQUI ↓↓↓ */}
-          <div style={{
-            width: "38px", height: "38px",
-            background: "linear-gradient(135deg, #77019a, #4d0461)",
-            borderRadius: "10px",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: "18px",
-            boxShadow: "0 0 16px rgba(119, 1, 154, 0.4)",
-          }}>
-            {/* <img src="/logo.svg" alt="Logo" style={{ width: "100%", height: "100%" }} /> */}
-            ✦
-          </div>
-          <span style={{
-            fontWeight: 800,
-            fontSize: "18px",
-            letterSpacing: "-0.03em",
-            background: "linear-gradient(135deg, #77019a, #af30d7)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}>
-      
-            Money Hot
-          </span>
+          <img src="/images/happy-hot-logo.svg" alt="Happy Hot" style={{ width: "160px", height: "42px" }} />
         </div>
 
         {/* Busca */}
@@ -490,15 +467,7 @@ export default function Plataforma() {
         display: "flex", alignItems: "center", justifyContent: "space-between",
         flexWrap: "wrap", gap: "12px",
       }}>
-        {/* Logo rodapé — substitua pelo seu */}
-        <span style={{
-          fontWeight: 800, fontSize: "15px",
-          background: "linear-gradient(135deg, #77019a, #af30d7)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-        }}>
-          ✦ Money Hot
-        </span>
+        <img src="/images/happy-hot-logo.svg" alt="Happy Hot" style={{ width: "115px", height: "28px" }} />
         <span style={{ fontSize: "12px", color: textMuted }}>
           © {new Date().getFullYear()} · Todos os direitos reservados
         </span>

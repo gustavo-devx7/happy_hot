@@ -39,9 +39,15 @@ const AgeGate: React.FC = () => {
         }}
       >
         <img
-          src="/images/money_hot_black.png"
-          alt="privacy"
-          style={{ width: 150, marginBottom: 30, }}
+          src="/images/happy-hot-logo.svg"
+          alt="Happy Hot"
+          style={{
+            width: 220,
+            height: "auto",
+            display: "block",
+            alignSelf: "center",
+            marginBottom: 30,
+          }}
         />
 
         <h1 style={{ marginBottom: 10, color: "black", fontWeight: 700 }}>Confirmação de idade</h1>

@@ -77,9 +77,7 @@ export function AdminPageClient({
 
             {/* ── topbar: badge + controles ── */}
             <div className="relative flex items-center justify-between border-b border-white/[0.07] px-6 py-3 sm:px-8">
-              <span className="inline-flex items-center rounded-full border border-purple-500/25 bg-purple-500/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.25em] text-purple-300">
-                Money Hot Admin
-              </span>
+              <img src="/images/happy-hot-logo.svg" alt="Happy Hot Admin" className="h-8 w-36 object-contain object-left" />
 
               <div className="flex items-center gap-3">
                 <ThemeToggle />

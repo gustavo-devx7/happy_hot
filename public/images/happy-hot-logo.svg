@@ -1,0 +1,11 @@
+<svg width="900" height="220" viewBox="0 0 900 220" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Happy Hot</title>
+  <desc id="desc">Logo Happy Hot em roxo</desc>
+  <defs>
+    <linearGradient id="purple" x1="450" y1="0" x2="450" y2="220" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8A32C8"/>
+      <stop offset="1" stop-color="#5B1B9E"/>
+    </linearGradient>
+  </defs>
+  <text x="450" y="164" text-anchor="middle" fill="url(#purple)" font-family="Arial Rounded MT Bold, Trebuchet MS, sans-serif" font-size="154" font-weight="900" font-style="normal" letter-spacing="-12">happy hot</text>
+</svg>

@@ -301,18 +301,12 @@ export default function Vitrine() {
                 padding: "14px 32px",
                 display: "flex", alignItems: "center", gap: "16px",
             }}>
-                {/* Logo — substitua aqui */}
                 <div style={{
-                    minWidth: "42px", height: "42px",
-                    background: "linear-gradient(135deg, #77019a, #4d0461)",
-                    borderRadius: "12px",
+                    width: "132px", height: "42px",
                     display: "flex", alignItems: "center", justifyContent: "center",
-                    fontSize: "20px",
-                    boxShadow: "0 0 18px rgba(119, 1, 154, 0.5)",
                     flexShrink: 0,
                 }}>
-                    {/* <img src="/logo.svg" alt="logo" style={{width:"100%",height:"100%"}} /> */}
-                    ✦
+                    <img src="/images/happy-hot-logo.svg" alt="Happy Hot" style={{ width: "100%", height: "100%" }} />
                 </div>
 
                 {/* Input busca */}

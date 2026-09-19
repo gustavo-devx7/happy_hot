@@ -38,9 +38,7 @@ export default async function AdminLoginPage({
             style={{ background: "#160d1a" }}
           >
             <div className="space-y-6">
-              <span className="inline-flex w-fit rounded-full border border-purple-400/25 bg-purple-500/10 px-4 py-1 text-[10px] font-semibold uppercase tracking-[0.28em] text-purple-200">
-                Money Hot Admin
-              </span>
+              <img src="/images/happy-hot-logo.svg" alt="Happy Hot Admin" className="h-12 w-48 object-contain object-left" />
               <div className="space-y-2.5">
                 <h1 className="max-w-sm text-3xl font-normal leading-tight tracking-tight">
                   Visão completa de clientes, receita e recorrência.

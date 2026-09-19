@@ -548,24 +548,11 @@ export default function Plataforma() {
         display: "flex", alignItems: "center", justifyContent: "space-between",
         gap: "16px",
       }}>
-        {/* LOGO — substitua pelo seu componente de logo */}
         <div style={{
           display: "flex", alignItems: "center", gap: "12px",
-          minWidth: "60px",
+          minWidth: "160px", height: "42px",
         }}>
-          {/* ↓↓↓ INSIRA SUA LOGO AQUI ↓↓↓ */}
-          <div style={{
-            width: "90%", height: "48px",
-            background: "linear-gradient(135deg, #77019a, #4d0461)",
-            borderRadius: "10px",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: "18px",
-            boxShadow: "0 0 16px rgba(119, 1, 154, 0.4)",
-          }}>
-             <img src="/images/mh_white.png" alt="Logo" style={{ width: "100%", height: "60%" }} className="object-cover"/> 
-            
-          </div>
-         
+          <img src="/images/happy-hot-logo.svg" alt="Happy Hot" style={{ width: "160px", height: "42px" }} />
         </div>
 
         {/* Busca */}
@@ -672,7 +659,7 @@ export default function Plataforma() {
           letterSpacing: "-0.03em",
           marginBottom: "10px",
         }}>
-          Money Hot
+          Happy Hot
         </h1>
         <p style={{ color: "rgba(255,255,255,0.75)", fontSize: "15px", maxWidth: "500px", margin: "0 auto" }}>
           Fotos e vídeos das suas criadoras favoritas, disponíveis para você.
@@ -747,15 +734,7 @@ export default function Plataforma() {
         display: "flex", alignItems: "center", justifyContent: "space-between",
         flexWrap: "wrap", gap: "12px",
       }}>
-        {/* Logo rodapé — substitua pelo seu */}
-        <span style={{
-          fontWeight: 800, fontSize: "15px",
-          background: "linear-gradient(135deg, #77019a, #af30d7)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-        }}>
-          ✦ Money Hot
-        </span>
+        <img src="/images/happy-hot-logo.svg" alt="Happy Hot" style={{ width: "115px", height: "28px" }} />
         <span style={{ fontSize: "12px", color: textMuted }}>
           © {new Date().getFullYear()} · Todos os direitos reservados
         </span>

@@ -280,3 +280,7 @@ body {
 body {
   padding-top: 0;
 }
+
+#email {
+  padding-left: 10px;
+}

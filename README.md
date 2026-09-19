@@ -1,4 +1,4 @@
-# Money Hot
+# Happy Hot
 
 Plataforma Next.js com vitrine de conteúdo, pagamento via PIX, registro do pagamento no banco e área privada protegida por sessão.
 
@@ -20,7 +20,7 @@ O projeto foi pensado para este fluxo:
 - React 19
 - TypeScript
 - Tailwind CSS
-- Supabase
+- Neon/PostgreSQL
 
 ## Rotas Principais
 
@@ -63,19 +63,20 @@ Adicionado `app/icon.png` e `app/apple-icon.png` (convenção de metadata do Nex
 
 
 
-Crie um `.env.local` com algo neste formato:
+Crie um `.env` (já incluído como modelo no projeto) e preencha os valores:
 
 ```env
-SUPABASE_URL=
-SUPABASE_SERVICE_ROLE_KEY=
+NEON_URL=postgresql://usuario:senha@host.neon.tech/database?sslmode=require
 SESSION_SECRET=
 
-BUCKPAY_API_URL=
-BUCKPAY_API_KEY=
-BUCKPAY_USER_AGENT=
+BUCKPAY_API_URL=https://...
+BUCKPAY_API_KEY=sua-chave-da-buckpay
+BUCKPAY_USER_AGENT=HappyHot/1.0
 
-NEXT_PUBLIC_APP_URL=https://money-hot.vercel.app
+NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
+
+Em produção, configure as mesmas variáveis no painel da Vercel. O `SESSION_SECRET` deve ser um valor aleatório longo e o `NEXT_PUBLIC_APP_URL` deve apontar para o domínio público final.
 
 ## Rodando Localmente
 
@@ -105,7 +106,7 @@ Antes de publicar, confirme:
 
 - `NEXT_PUBLIC_APP_URL` com o domínio final
 - webhook do gateway apontando para `/api/pix/webhook`
-- variáveis do Supabase configuradas
+- variáveis do Neon/PostgreSQL e da BuckPay configuradas
 - gateway de pagamento configurado
 
 ## Observações

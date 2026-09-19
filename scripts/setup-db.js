@@ -4,7 +4,14 @@ const fs = require('fs')
 const path = require('path')
 
 function loadEnv() {
-    const envPath = path.join(__dirname, '..', '.env.local')
+    const envPath = ['.env.local', '.env']
+        .map(fileName => path.join(__dirname, '..', fileName))
+        .find(filePath => fs.existsSync(filePath))
+
+    if (!envPath) {
+        throw new Error('Arquivo .env.local ou .env não encontrado')
+    }
+
     const envContent = fs.readFileSync(envPath, 'utf-8')
     const env = {}
     envContent.split('\n').forEach(line => {
@@ -21,7 +28,7 @@ async function setupDatabase() {
     const neonUrl = env.NEON_URL
 
     if (!neonUrl) {
-        console.error('❌ NEON_URL não configurada em .env.local')
+        console.error('❌ NEON_URL não configurada em .env.local ou .env')
         process.exit(1)
     }
 

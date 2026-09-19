@@ -8,7 +8,7 @@ import './pages/pages.css'
 import { ThemeProvider } from '@/components/theme-provider'
 
 export const metadata: Metadata = {
-  title: 'Money Hot',
+  title: 'Happy Hot',
   description: 'Clique e venha ver a surpresa que preparei para você!',
 }
 

@@ -213,7 +213,7 @@ export default function PrivacyPage() {
 
                     <div className="nav-container">
                         <div className="logo-wrapper">
-                            <img src="/images/money_hot_black.png" alt="" />
+                            <img src="/images/happy-hot-logo.svg" alt="Happy Hot" className="logo-svg" />
                         </div>
                     </div>
                 </nav>
