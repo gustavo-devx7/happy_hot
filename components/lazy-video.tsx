@@ -25,6 +25,7 @@ export default function LazyVideo({
     ...videoProps
 }: LazyVideoProps) {
     const containerRef = useRef<HTMLDivElement | null>(null)
+    const videoRef = useRef<HTMLVideoElement | null>(null)
     const [shouldLoad, setShouldLoad] = useState(false)
 
     useEffect(() => {
@@ -53,6 +54,25 @@ export default function LazyVideo({
         return () => observer.disconnect()
     }, [rootMargin])
 
+    useEffect(() => {
+        if (!shouldLoad) return
+
+        const video = videoRef.current
+        if (!video) return
+
+        if (video.muted === false) {
+            video.muted = true
+        }
+
+        video.playsInline = true
+        video.autoplay = true
+
+        video.play().catch(() => {
+            // Alguns navegadores bloqueiam autoplay até o usuário interagir.
+            // Em seguida, o vídeo continua carregando e fica pronto para reprodução.
+        })
+    }, [shouldLoad, src])
+
     return (
         <div
             ref={containerRef}
@@ -60,7 +80,17 @@ export default function LazyVideo({
             className={wrapperClassName}
         >
             {shouldLoad ? (
-                <video src={src} preload="metadata" style={style} {...videoProps} />
+                <video
+                    ref={videoRef}
+                    src={src}
+                    preload="auto"
+                    playsInline
+                    muted
+                    autoPlay
+                    loop
+                    style={style}
+                    {...videoProps}
+                />
             ) : (
                 <div style={{ width: "100%", height: "100%", background: "#0d1117", ...style }} />
             )}

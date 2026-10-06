@@ -83,5 +83,12 @@ export async function clearCustomerSession() {
 
 export async function getCustomerSession() {
   const cookieStore = await cookies()
-  return readSessionToken(cookieStore.get(SESSION_COOKIE_NAME)?.value)
+  const rawToken = cookieStore.get(SESSION_COOKIE_NAME)?.value
+  const session = readSessionToken(rawToken)
+
+  if (!session && rawToken) {
+    cookieStore.delete(SESSION_COOKIE_NAME)
+  }
+
+  return session
 }

@@ -364,7 +364,6 @@ export default function PrivacyPage() {
                                                         transform: `scale(${(post.style as any)?.scale ?? 1})`,
                                                         objectPosition: (post.style as any)?.objectPosition ?? "50% 50%",
                                                         objectFit: "cover",
-                                                        filter: "blur(6px)",
                                                     }}
                                                     playsInline
                                                     muted

@@ -87,5 +87,12 @@ export async function clearAdminSession() {
 
 export async function getAdminSession() {
   const cookieStore = await cookies()
-  return readAdminSessionToken(cookieStore.get(ADMIN_COOKIE_NAME)?.value)
+  const rawToken = cookieStore.get(ADMIN_COOKIE_NAME)?.value
+  const session = readAdminSessionToken(rawToken)
+
+  if (!session && rawToken) {
+    cookieStore.delete(ADMIN_COOKIE_NAME)
+  }
+
+  return session
 }
