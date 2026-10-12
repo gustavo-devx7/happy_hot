@@ -356,8 +356,8 @@ export default function PrivacyPage() {
                                             <div className="feed-media">
                                                 <LazyVideo
                                                     src={post.video}
-                                                    eager={i === 0}
-                                                    className="feed-video"
+                                                    eager
+                                                    className="feed-video blurred"
                                                     wrapperStyle={{ position: "absolute", inset: 0 }}
                                                     style={{
                                                         width: "100%",
