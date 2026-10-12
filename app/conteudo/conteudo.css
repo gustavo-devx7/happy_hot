@@ -321,6 +321,33 @@ video {
     display: inline-block;
 }
 
+.whatsapp-contact-button {
+    display: flex;
+    width: fit-content;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    margin: 1rem auto 1.25rem;
+    padding: 0.8rem 1.2rem;
+    border-radius: 999px;
+    background: #25d366;
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.25);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.whatsapp-contact-button:hover {
+    background: #1fbd5b;
+    transform: translateY(-1px);
+}
+
+.whatsapp-contact-button:focus-visible {
+    outline: 3px solid #128c45;
+    outline-offset: 3px;
+}
+
 /* ==================== PRICING PANEL ==================== */
 .pricing-panel {
     background: #ffffff;

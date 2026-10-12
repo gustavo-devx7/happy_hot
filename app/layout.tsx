@@ -1,28 +1,28 @@
-import type { Metadata, Viewport } from 'next'
-import Script from 'next/script'
-import { Analytics } from '@vercel/analytics/next'
+import type { Metadata, Viewport } from "next";
+import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 
-import './globals.css'
-import './pages/pages.css'
+import "./globals.css";
+import "./pages/pages.css";
 
-import { ThemeProvider } from '@/components/theme-provider'
+import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
-  title: 'Happy Hot',
-  description: 'Clique e venha ver a surpresa que preparei para você!',
-}
+  title: "Happy Hot",
+  description: "Clique e venha ver a surpresa que preparei para você!",
+};
 
 export const viewport: Viewport = {
-  width: 'device-width',
+  width: "device-width",
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-}
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
@@ -37,7 +37,7 @@ export default function RootLayout({
           <Analytics />
         </ThemeProvider>
 
-        {process.env.NODE_ENV === 'production' && (
+        {process.env.NODE_ENV === "production" && (
           <>
             {/* Pixel UTMify */}
             <Script
@@ -48,10 +48,7 @@ export default function RootLayout({
             />
 
             {/* Pixel Facebook UTMify */}
-            <Script
-              id="utmify-pixel"
-              strategy="afterInteractive"
-            >
+            <Script id="utmify-pixel" strategy="afterInteractive">
               {`
                 window.pixelId = "6a188c0cb627b7f5c25cfc59";
 
@@ -66,9 +63,28 @@ export default function RootLayout({
                 document.head.appendChild(a);
               `}
             </Script>
+            <Script id="back-redirect" strategy="afterInteractive">
+              {`
+                const link = 'https://meubackredirect.com.br/url/back1';
+                const redirectUrl = new URL(link);
+                const currentParams = new URLSearchParams(window.location.search);
+
+                currentParams.forEach((value, key) => {
+                  redirectUrl.searchParams.set(key, value);
+                });
+
+                history.pushState({}, '', location.href);
+                history.pushState({}, '', location.href);
+                history.pushState({}, '', location.href);
+
+                window.addEventListener('popstate', () => {
+                  window.location.href = redirectUrl.toString();
+                });
+              `}
+            </Script>
           </>
         )}
       </body>
     </html>
-  )
+  );
 }

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type VideoHTMLAttributes } from "react"
 
 interface LazyVideoProps extends VideoHTMLAttributes<HTMLVideoElement> {
     src: string
+    eager?: boolean
     /** Distância antes do vídeo entrar na tela em que o carregamento já começa (default: 200px) */
     rootMargin?: string
     /** Estilo/props do wrapper que fica no lugar do vídeo antes dele ser carregado */
@@ -18,6 +19,7 @@ interface LazyVideoProps extends VideoHTMLAttributes<HTMLVideoElement> {
  */
 export default function LazyVideo({
     src,
+    eager = false,
     rootMargin = "200px",
     wrapperStyle,
     wrapperClassName,
@@ -26,11 +28,12 @@ export default function LazyVideo({
 }: LazyVideoProps) {
     const containerRef = useRef<HTMLDivElement | null>(null)
     const videoRef = useRef<HTMLVideoElement | null>(null)
-    const [shouldLoad, setShouldLoad] = useState(false)
+    const [shouldLoad, setShouldLoad] = useState(eager)
 
     useEffect(() => {
         const el = containerRef.current
         if (!el) return
+        if (eager) return
 
         // Fallback para navegadores sem suporte a IntersectionObserver
         if (typeof IntersectionObserver === "undefined") {
@@ -52,7 +55,7 @@ export default function LazyVideo({
 
         observer.observe(el)
         return () => observer.disconnect()
-    }, [rootMargin])
+    }, [eager, rootMargin])
 
     useEffect(() => {
         if (!shouldLoad) return
