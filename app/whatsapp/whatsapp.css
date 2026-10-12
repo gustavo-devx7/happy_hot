@@ -1,0 +1,97 @@
+.whatsapp-page {
+  --wa-green: #075e54;
+  width: 100%;
+  height: 100svh;
+  min-height: 100svh;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  padding: 0;
+  color: #f8f5fa;
+  background: #0c0a0e;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+.wa-glow { position: absolute; pointer-events: none; border-radius: 50%; filter: blur(100px); opacity: .17; }
+.wa-glow-one { width: 360px; height: 360px; background: #8d22a8; left: -180px; top: 30%; }
+.wa-glow-two { width: 300px; height: 300px; background: #00a884; right: -170px; bottom: 8%; opacity: .11; }
+.wa-intro { position: relative; z-index: 1; text-align: center; }
+.wa-brand { display: flex; align-items: center; justify-content: center; gap: 6px; color: #f6eafa; font-size: 12px; font-weight: 700; letter-spacing: .18em; }
+.wa-brand b { color: #d38be4; }
+.wa-brand-icon { display: inline-flex; color: #cb77df; margin-right: 5px; }
+.wa-live { margin: 20px auto 14px; display: flex; justify-content: center; align-items: center; gap: 7px; color: #b7aab9; font-size: 9px; font-weight: 700; letter-spacing: .16em; }
+.wa-live i { width: 6px; height: 6px; border-radius: 50%; background: #37d7a2; box-shadow: 0 0 10px #37d7a2; }
+.wa-intro h1 { margin: 0; font-family: Georgia, 'Times New Roman', serif; font-weight: 400; font-size: clamp(29px, 5vw, 39px); line-height: 1.08; letter-spacing: -.035em; }
+.wa-intro h1 span { color: #d49be2; font-style: italic; }
+.wa-intro p { color: #a89da9; font-size: 12px; margin: 10px 0 0; }
+.wa-phone { position: relative; z-index: 1; width: min(100%, 430px); height: 100%; min-height: 0; display: flex; flex-direction: column; overflow: hidden; border: 0; border-radius: 0; background: #efeae2; box-shadow: 0 0 80px rgba(0,0,0,.35); color: #111b21; }
+.wa-chat-header { height: 58px; flex: 0 0 58px; display: flex; align-items: center; gap: 12px; padding: 0 12px; color: white; background: #075e54; }
+.wa-chat-header button, .wa-composer button { border: 0; padding: 0; display: grid; place-items: center; color: inherit; background: transparent; cursor: pointer; }
+.wa-chat-header button { flex: 0 0 auto; }
+.wa-chat-header .wa-back { margin-right: -6px; }
+.wa-avatar { position: relative; flex: 0 0 37px; height: 37px; overflow: hidden; border-radius: 50%; display: grid; place-items: center; color: #553148; font-family: Georgia, serif; font-size: 19px; background: linear-gradient(140deg, #f4c6d3, #c487a8); }
+.wa-avatar img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.wa-online { position: absolute; width: 10px; height: 10px; right: -1px; bottom: 0; border: 2px solid #075e54; border-radius: 50%; background: #2ecc71; }
+.wa-contact { display: flex; flex: 1; min-width: 0; flex-direction: column; gap: 3px; }
+.wa-contact strong { font-size: 14px; font-weight: 600; }
+.wa-contact span { color: #c0dbd5; font-family: inherit; font-size: 11px; font-weight: 400; font-style: normal; }
+.wa-contact .wa-typing { color: #d2f3e8; }
+.wa-chat-header button:last-child { margin-left: -5px; }
+.wa-messages { flex: 1; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none; padding: 12px 12px 16px; display: flex; align-items: flex-start; flex-direction: column; gap: 8px; background-color: #efeae2; background-image: radial-gradient(rgba(75, 90, 80, .07) .7px, transparent .7px); background-size: 13px 13px; }
+.wa-messages::-webkit-scrollbar { display: none; }
+.wa-encryption { max-width: 275px; align-self: center; text-align: center; margin: 0 auto 5px; padding: 7px 9px; border-radius: 7px; color: #635849; background: #fff4c9; font-size: 9px; line-height: 1.4; }
+.wa-encryption span { margin-right: 3px; }
+.wa-date { align-self: center; padding: 5px 9px; border-radius: 6px; color: #56656a; background: #fff; font-size: 9px; font-weight: 700; box-shadow: 0 1px 1px #00000012; }
+.wa-message { max-width: 82%; min-width: 110px; display: flex; flex-direction: column; gap: 3px; padding: 8px 9px 6px; border-radius: 8px; box-shadow: 0 1px 1px #00000012; color: #172126; font-size: 13.5px; font-weight: 500; line-height: 1.42; }
+.wa-message-received { align-self: flex-start; background: #fff; border-top-left-radius: 2px; }
+.wa-message-sent { align-self: flex-end; background: #d9fdd3; border-top-right-radius: 2px; }
+.wa-message small { align-self: flex-end; display: flex; align-items: center; gap: 3px; color: #66777a; font-size: 10px; font-weight: 400; line-height: 1; }
+.wa-message-sent small svg { color: #53a9c1; }
+.wa-flow-hint { align-self: center; margin-top: auto; padding: 7px 10px; border: 1px solid #d8d0c5; border-radius: 99px; color: #756e67; background: rgba(255,255,255,.65); font-size: 9px; }
+.wa-flow-hint span { color: #a747bc; margin-right: 4px; }
+.wa-composer { min-height: 52px; flex: 0 0 52px; padding: 6px 9px; display: flex; align-items: center; gap: 9px; background: #f0f2f3; color: #54656b; }
+.wa-composer input { min-width: 0; height: 39px; flex: 1; padding: 0 13px; border: 0; outline: 0; border-radius: 20px; color: #172126; background: white; font: inherit; font-size: 12px; }
+.wa-composer input::placeholder { color: #879396; }
+.wa-composer .wa-send { flex: 0 0 38px; width: 38px; height: 38px; border-radius: 50%; color: white; background: #075e54; }
+.wa-home-indicator { height: 17px; flex: 0 0 17px; display: grid; place-items: center; background: #f0f2f3; }
+.wa-home-indicator i { width: 92px; height: 4px; border-radius: 5px; background: #172126; }
+.wa-caption { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; color: #887d8c; font-size: 9px; letter-spacing: .03em; }
+.wa-caption span:first-child { display: flex; align-items: center; gap: 4px; color: #c6adc9; }
+.wa-choice-row, .wa-bonus-options { width: 100%; display: flex; flex-direction: column; gap: 7px; padding: 2px 1px 4px; }
+.wa-choice-row button { width: 100%; min-height: 42px; padding: 9px 11px; border: 1px solid #d9d2c9; border-radius: 8px; color: #075e54; background: rgba(255,255,255,.93); font: 700 12px -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; cursor: pointer; }
+.wa-choice-row button:last-child { border-color: #075e54; color: white; background: rgba(7,94,84,.83); }
+.wa-bonus-options button { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 11px; border: 1px solid #c8ded3; border-radius: 8px; text-align: left; color: #163c31; background: #f7fffb; font: 700 12px -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; cursor: pointer; }
+.wa-bonus-options button small { color: #55736a; font-size: 10px; white-space: nowrap; }
+.wa-photo-message { padding: 4px; min-width: 0; max-width: 78%; }
+.wa-photo-message img { display: block; width: min(205px, 57vw); max-height: 230px; object-fit: cover; border-radius: 6px; }
+.wa-audio-message { min-width: 0; width: min(265px, 78%); padding: 9px 8px 5px; }
+.wa-voice { display: flex; align-items: center; gap: 7px; min-height: 38px; }
+.wa-voice > button { flex: 0 0 32px; width: 32px; height: 32px; box-sizing: border-box; padding: 0; display: grid; place-items: center; border: 0; border-radius: 50%; color: white; background: #00a884; font-size: 12px; line-height: 0; cursor: pointer; }
+.wa-voice > .wa-play-button svg { display: block; transform: translateX(1px); }
+.wa-wave { flex: 1; height: 26px; display: flex; align-items: center; justify-content: space-between; gap: 2px; overflow: hidden; }
+.wa-wave i { flex: 1; min-width: 2px; border-radius: 2px; background: #7eaaa0; }
+.wa-voice small { align-self: auto; flex: 0 0 auto; color: #66777a; font-size: 9px; }
+.wa-voice-avatar { flex: 0 0 28px; width: 28px; height: 28px; overflow: hidden; display: grid; place-items: center; border-radius: 50%; color: #553148; background: linear-gradient(140deg, #f4c6d3, #c487a8); font: 13px Georgia,serif; }
+.wa-audio-message > .wa-voice > button, .wa-audio-message > .wa-voice > .wa-wave, .wa-audio-message > .wa-voice > small, .wa-audio-message > .wa-voice > .wa-voice-avatar, .wa-audio-message > .wa-voice > audio { display: none; }
+.wa-voice audio { display: none; }
+.wa-voice .wa-voice { width: 100%; }
+.wa-voice-avatar img { display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+.wa-wave .wa-wave-played { background: #00a884; }
+.wa-pix-form, .wa-pix-card { width: 100%; padding: 11px; display: flex; flex-direction: column; gap: 8px; border: 1px solid #d5dcd8; border-radius: 9px; color: #26352f; background: #fff; font-size: 11px; }
+.wa-pix-form > strong, .wa-pix-card > strong { color: #075e54; font-size: 12px; }
+.wa-pix-form label { display: flex; flex-direction: column; gap: 4px; color: #53635d; font-size: 9px; font-weight: 700; }
+.wa-pix-form input { width: 100%; min-height: 34px; padding: 6px 8px; border: 1px solid #d5dcd8; border-radius: 6px; color: #172126; background: #fff; font: 12px -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+.wa-pix-form > button, .wa-pix-card > button, .wa-payment-status button { min-height: 36px; border: 0; border-radius: 7px; color: white; background: #087c68; font: 700 11px -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; cursor: pointer; }
+.wa-pix-form > small, .wa-pix-card > small { color: #78837f; font-size: 9px; line-height: 1.4; }
+.wa-pix-card label { color: #53635d; font-size: 9px; font-weight: 700; }
+.wa-pix-card textarea { width: 100%; resize: vertical; padding: 7px; border: 1px solid #d5dcd8; border-radius: 6px; color: #40514a; background: #f7f9f8; font: 9px/1.4 monospace; overflow-wrap: anywhere; }
+.wa-pix-card > button { display: flex; justify-content: center; align-items: center; gap: 5px; }
+.wa-pix-qr { width: 140px; height: 140px; align-self: center; object-fit: contain; }
+.wa-payment-status { width: 100%; padding: 13px; display: flex; align-items: center; justify-content: center; gap: 9px; border-radius: 8px; color: #38574c; background: white; font-size: 11px; }
+.wa-payment-error { flex-direction: column; color: #9c2f2f; text-align: center; }
+.wa-payment-status button { width: 100%; padding: 6px; }
+.wa-spinner { width: 17px; height: 17px; border: 2px solid #c9e4da; border-top-color: #087c68; border-radius: 50%; animation: wa-spin .7s linear infinite; }
+.wa-copy-error { color: #a33b36 !important; }
+@keyframes wa-spin { to { transform: rotate(360deg); } }
+@media (max-width: 600px) { .wa-phone { width: 100%; max-width: none; box-shadow: none; } }
