@@ -226,7 +226,7 @@ export default function PrivacyPage() {
                         {/* Cover Section */}
                         <div className="cover-section">
                             <div className="cover-image">
-                                <img src="/images/mel-santos/f30.webp" alt="imagem banner" className="banner" />
+                                <img src="/images/banner.jpg" alt="imagem banner" className="banner" />
                                 <div className="cover-stats">
                                     <span>📷 354</span>
                                     <span>🎥 148</span>
@@ -445,7 +445,7 @@ export default function PrivacyPage() {
                         <button onClick={() => setPopupActive(false)} className="popup-close">✕</button>
                         <div className="popup-cover">
                             <div className="cover-image">
-                                <img src="/images/mel-santos/f30.webp" alt="imagem banner" className="banner" loading="lazy" decoding="async" />
+                                <img src="/images/banner.jpg" alt="imagem banner" className="banner" loading="lazy" decoding="async" />
                             </div>
                             <div className="popup-profile">
                                 <div className="popup-avatar">
@@ -524,7 +524,7 @@ export default function PrivacyPage() {
                     <div onClick={(e) => e.target === e.currentTarget && fecharPixModal()} className="pix-overlay">
                         <div className="pix-modal">
                             <div className="cover-image">
-                                <img src="/images/mel-santos/f30.webp" alt="imagem banner" className="banner" loading="lazy" decoding="async" />
+                                <img src="/images/banner.jpg" alt="imagem banner" className="banner" loading="lazy" decoding="async" />
                             </div>
                             <div className="pix-header">
                                 <div>
