@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { queryOne } from "@/lib/db"
 import { setCustomerSession } from "@/lib/auth-session"
+import { ensureCustomerAccessGrantsTable } from "@/lib/customer-access-grants"
 import { getCustomerAccessExpiresAt, getCustomerAccessWindowDays, isCustomerAccessExpired } from "@/lib/customer-access"
 
 const TEST_EMAIL = "teste@gmail.com"
@@ -57,6 +58,16 @@ export async function POST(request: NextRequest) {
       // Acesso de teste: nao exige pagamento. Validade de 1 ano a partir do login.
       const testExpiresAt = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
       await setCustomerSession(email, testExpiresAt)
+      return NextResponse.json({ ok: true })
+    }
+
+    await ensureCustomerAccessGrantsTable()
+    const grant = await queryOne<{ email: string; expires_at: string }>(
+      `SELECT email, expires_at FROM customer_access_grants WHERE email = $1 AND expires_at > CURRENT_TIMESTAMP`,
+      [email],
+    )
+    if (grant) {
+      await setCustomerSession(grant.email, new Date(grant.expires_at))
       return NextResponse.json({ ok: true })
     }
 

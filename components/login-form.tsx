@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react"
 import { redirectWithParams } from "../lib/redirect"
+import styles from "@/app/entrar/login-form.module.css"
 
 export function LoginForm() {
 
@@ -51,38 +52,31 @@ export function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col items-center gap-5">
-      <div />
-      <div className="mt-6 flex w-full flex-col items-center gap-6">
-        <label
-          htmlFor="email"
-          className="text-sm font-medium text-neutral-700 dark:text-neutral-200"
-        >
-          E-mail usado no pagamento
-        </label>
-
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <div className={styles.field}>
+        <label htmlFor="email">E-mail usado no pagamento</label>
         <input
           id="email"
           type="email"
+          required
           value={email}
           onChange={(event) => setEmail(event.target.value)}
           placeholder="exemplo@gmail.com"
-          className="h-12 w-[85%] rounded-xl border border-neutral-300 bg-white pl-40 text-sm text-neutral-900 outline-none 
-                    transition focus:border-purple-500 dark:border-white/10 dark:bg-white/5 dark:text-white "
+          autoComplete="email"
+          className={styles.input}
           disabled={isLoading}
         />
       </div>
 
-      {error && <p className="-mt-2 text-sm text-red-600 dark:text-red-400">{error}</p>}
+      {error && <p className={styles.error} role="alert">{error}</p>}
 
       <button
         type="submit"
         disabled={isLoading}
-        className="mb-6 h-12 w-[85%] rounded-xl bg-purple-500 px-4 text-sm font-semibold text-white transition hover:bg-purple-600 disabled:opacity-60"
+        className={styles.button}
       >
         {isLoading ? "Entrando..." : "Acessar plataforma"}
       </button>
-      <div />
     </form>
   )
 }

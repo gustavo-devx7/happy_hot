@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
+import { execute } from "@/lib/db"
 
 // Configuração da API BuckPay
 const BUCKPAY_API_URL = process.env.BUCKPAY_API_URL
@@ -39,20 +40,29 @@ export async function POST(request: NextRequest) {
 
     const body: CreatePixRequest = await request.json()
 
-    if (!body.name || !body.email || !body.amount) {
+    const name = typeof body.name === "string" ? body.name.trim() : ""
+    const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : ""
+    const amount = Number(body.amount)
+
+    if (!name || !email || !Number.isFinite(amount)) {
       return NextResponse.json(
         { error: "Dados incompletos. Informe nome, email e valor." },
         { status: 400 }
       )
     }
 
-    if (body.amount <= 0) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || name.length > 255 || email.length > 255) {
+      return NextResponse.json({ error: "Nome ou e-mail inválido." }, { status: 400 })
+    }
+
+    if (amount < 6 || amount > 3000) {
       return NextResponse.json(
-        { error: "O valor deve ser maior que zero." },
+        { error: "O valor do pagamento deve estar entre R$ 6,00 e R$ 3.000,00." },
         { status: 400 }
       )
     }
 
+    const externalId = `pix_${Date.now()}_${Math.random().toString(36).substring(2, 12)}`
     const response = await fetch(`${BUCKPAY_API_URL}/v1/transactions`, {
       method: "POST",
       headers: {
@@ -61,12 +71,12 @@ export async function POST(request: NextRequest) {
         "User-Agent": BUCKPAY_USER_AGENT,
       },
       body: JSON.stringify({
-        external_id: `pix_${Date.now()}_${Math.random().toString(36).substring(7)}`,
+        external_id: externalId,
         payment_method: "pix",
-        amount: Math.round(body.amount * 100), 
+        amount: Math.round(amount * 100),
         buyer: {
-          name: body.name,
-          email: body.email,
+          name,
+          email,
         },
         postbackUrl: process.env.NEXT_PUBLIC_APP_URL 
           ? `${process.env.NEXT_PUBLIC_APP_URL}/api/pix/webhook`
@@ -102,11 +112,25 @@ export async function POST(request: NextRequest) {
     // Mapeia a resposta da BuckPay para o formato esperado pelo frontend
     const payload = data ?? {}
     const pixData = payload.data?.pix || payload.pix
+    const transactionId = payload.data?.id || payload.id
+    if (!transactionId || !pixData?.code) {
+      return NextResponse.json({ error: "Resposta inválida do gateway PIX." }, { status: 502 })
+    }
+
+    // Persist pending transactions so the status endpoint can poll immediately,
+    // even before the gateway delivers its webhook.
+    await execute(
+      `INSERT INTO customers (email, name, transaction_id, status, amount_cents)
+       VALUES ($1, $2, $3, 'pending', $4)
+       ON CONFLICT (transaction_id) DO NOTHING`,
+      [email, name, transactionId, Math.round(amount * 100)]
+    )
+
     return NextResponse.json({
-      transactionId: payload.data?.id || payload.id,
+      transactionId,
       qrCodeBase64: pixData?.qrcode_base64 || "",
       copyPaste: pixData?.code || "",
-      amount: body.amount,
+      amount,
     })
 
   } catch (error) {

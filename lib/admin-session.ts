@@ -2,7 +2,6 @@ import { cookies } from "next/headers"
 import { createHmac, timingSafeEqual } from "node:crypto"
 
 const ADMIN_COOKIE_NAME = "admin_session"
-const ADMIN_PASSWORD = "!15Admin07!"
 
 function getSessionSecret() {
   const secret = process.env.SESSION_SECRET
@@ -65,7 +64,8 @@ function readAdminSessionToken(token: string | undefined) {
 }
 
 export function isValidAdminPassword(password: string) {
-  return password === ADMIN_PASSWORD
+  const adminPassword = process.env.ADMIN_PASSWORD
+  return Boolean(adminPassword) && password === adminPassword
 }
 
 export async function setAdminSession() {

@@ -1,6 +1,7 @@
 import { AdminPageClient } from "@/app/admin/(protected)/admin-page-client"
 import { buildAdminDashboardData } from "@/lib/admin-metrics"
 import { query } from "@/lib/db"
+import { ensureCustomerAccessGrantsTable } from "@/lib/customer-access-grants"
 
 export const dynamic = "force-dynamic"
 
@@ -38,6 +39,26 @@ export default async function AdminPage() {
        ORDER BY created_at ASC`,
     )
     dashboardData = buildAdminDashboardData(customers ?? [])
+    await ensureCustomerAccessGrantsTable()
+    const grants = await query<{ email: string; name: string | null; expires_at: string }>(
+      `SELECT email, name, expires_at FROM customer_access_grants ORDER BY created_at DESC`,
+    )
+    for (const grant of grants) {
+      const existing = dashboardData.clients.find((client) => client.email === grant.email.toLowerCase())
+      const isActive = new Date(grant.expires_at).getTime() > Date.now()
+      if (existing) {
+        if (isActive) existing.accessStatus = "ativo"
+        existing.manualAccess = true
+      } else {
+        dashboardData.clients.push({
+          accessStatus: isActive ? "ativo" : "expirado",
+          email: grant.email.toLowerCase(), firstPaymentAt: null, lastPaymentAt: null,
+          latestStatus: "acesso manual", name: grant.name, paymentCount: 0,
+          segment: "novo", totalPaidCents: 0, transactions: [], manualAccess: true,
+        })
+      }
+    }
+    dashboardData.clients.sort((a, b) => a.email.localeCompare(b.email))
   } catch (error) {
     loadError = getAdminLoadErrorMessage(error)
   }

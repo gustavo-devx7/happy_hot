@@ -20,6 +20,7 @@ export interface AdminClientRow {
   segment: "novo" | "recorrente"
   totalPaidCents: number
   transactions: string[]
+  manualAccess?: boolean
 }
 
 export interface AdminDashboardData {

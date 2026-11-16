@@ -1,6 +1,8 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, type FormEvent } from "react"
+import { useRouter } from "next/navigation"
+import { addAdminClient } from "@/app/admin/actions"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   Table,
@@ -76,10 +78,11 @@ function MetricCard({
   if (accent) {
     return (
       <article
-        className="rounded-[20px] p-5"
+        className="min-h-[148px] rounded-[20px] p-6 sm:p-7"
         style={{
           background: "linear-gradient(135deg, #180f1b, #161018)",
           boxShadow: "0 16px 48px rgba(24, 15, 27, 0.25)",
+          padding: "24px",
         }}
       >
         <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-purple-300">
@@ -95,11 +98,12 @@ function MetricCard({
 
   return (
     <article
-      className="rounded-[20px] border p-5"
+      className="min-h-[148px] rounded-[20px] border p-6 sm:p-7"
       style={{
         background: "var(--card)",
         borderColor: "var(--border)",
         color: "var(--card-foreground)",
+        padding: "24px",
       }}
     >
       <p
@@ -162,9 +166,36 @@ function BarRow({
 // ─── AdminDashboard ───────────────────────────────────────────────────────────
 
 export function AdminDashboard({ data }: { data: AdminDashboardData }) {
+  const router = useRouter()
   const { clients, summary } = data
   const [search, setSearch] = useState("")
   const [statusFilter, setStatusFilter] = useState<"" | "ativo" | "expirado" | "pendente">("")
+  const [grantMessage, setGrantMessage] = useState("")
+  const [grantPending, setGrantPending] = useState(false)
+
+  async function handleAddClient(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    const formElement = event.currentTarget
+    setGrantPending(true)
+    setGrantMessage("")
+    const form = new FormData(formElement)
+    try {
+      const result = await addAdminClient({
+        name: String(form.get("name") ?? ""),
+        email: String(form.get("email") ?? ""),
+        days: Number(form.get("days") ?? 30),
+      })
+      setGrantMessage(result.error ?? result.success ?? "Não foi possível salvar.")
+      if (result.success) {
+        formElement.reset()
+        router.refresh()
+      }
+    } catch {
+      setGrantMessage("Não foi possível salvar o acesso. Verifique a conexão com o banco.")
+    } finally {
+      setGrantPending(false)
+    }
+  }
 
   const filteredClients = useMemo(() => {
     const q = search.toLowerCase()
@@ -201,22 +232,21 @@ export function AdminDashboard({ data }: { data: AdminDashboardData }) {
           .replace(".", ",")
 
   return (
-    <Tabs defaultValue="visao-geral" className="space-y-5">
+    <Tabs defaultValue="visao-geral" className="gap-6">
       {/* ── nav ── */}
       <TabsList
-        className="h-auto gap-1.5 rounded-2xl p-1.5"
-        style={{ background: "var(--muted)" }}
+        className="h-auto w-fit gap-3 rounded-none bg-transparent p-0"
       >
         <TabsTrigger
           value="visao-geral"
-          className="rounded-xl px-5 py-2 text-sm font-medium transition-colors data-[state=active]:bg-[#180f1b] data-[state=active]:text-white"
+          className="flex-none rounded-xl border px-6 py-2.5 text-sm font-medium transition-colors data-[state=active]:border-[#180f1b] data-[state=active]:bg-[#180f1b] data-[state=active]:text-white"
           style={{ color: "var(--muted-foreground)" }}
         >
           Visão geral
         </TabsTrigger>
         <TabsTrigger
           value="clientes"
-          className="rounded-xl px-5 py-2 text-sm font-medium transition-colors data-[state=active]:bg-[#180f1b] data-[state=active]:text-white"
+          className="flex-none rounded-xl border px-6 py-2.5 text-sm font-medium transition-colors data-[state=active]:border-[#180f1b] data-[state=active]:bg-[#180f1b] data-[state=active]:text-white"
           style={{ color: "var(--muted-foreground)" }}
         >
           Clientes
@@ -224,9 +254,9 @@ export function AdminDashboard({ data }: { data: AdminDashboardData }) {
       </TabsList>
 
       {/* ── visão geral ── */}
-      <TabsContent value="visao-geral" className="space-y-4">
+      <TabsContent value="visao-geral" className="space-y-6">
         {/* metric cards */}
-        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
           <MetricCard
             label="Faturamento novo"
             value={formatCurrency(summary.newCustomerRevenueCents)}
@@ -251,10 +281,10 @@ export function AdminDashboard({ data }: { data: AdminDashboardData }) {
         </div>
 
         {/* distribution + quick read */}
-        <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
+        <div className="grid gap-6 lg:grid-cols-[1.35fr_0.85fr]">
           <article
-            className="space-y-5 rounded-[24px] border p-6"
-            style={{ background: "var(--card)", borderColor: "var(--border)" }}
+            className="min-h-[220px] space-y-6 rounded-[24px] border p-6 sm:p-7"
+            style={{ background: "var(--card)", borderColor: "var(--border)", padding: "24px" }}
           >
             <div>
               <p
@@ -270,15 +300,15 @@ export function AdminDashboard({ data }: { data: AdminDashboardData }) {
                 Distribuição da operação
               </h3>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-6">
               <BarRow label="Novos" count={summary.newCustomersCount} pct={newPct} variant="green" />
               <BarRow label="Recorrentes" count={summary.recurringCustomersCount} pct={recurringPct} variant="dark" />
             </div>
           </article>
 
           <article
-            className="space-y-3 rounded-[24px] border p-6"
-            style={{ background: "var(--secondary)", borderColor: "var(--border)" }}
+            className="space-y-4 rounded-[24px] border p-6 sm:p-7"
+            style={{ background: "var(--secondary)", borderColor: "var(--border)", padding: "24px" }}
           >
             <p
               className="text-[10px] font-semibold uppercase tracking-[0.22em]"
@@ -319,7 +349,7 @@ export function AdminDashboard({ data }: { data: AdminDashboardData }) {
         >
           {/* header */}
           <div
-            className="border-b px-6 py-5"
+            className="border-b px-5 py-5 sm:px-6"
             style={{ borderColor: "var(--border)" }}
           >
             <p
@@ -336,9 +366,34 @@ export function AdminDashboard({ data }: { data: AdminDashboardData }) {
             </h3>
           </div>
 
+          <form
+            onSubmit={handleAddClient}
+            className="grid gap-3 border-b px-5 py-5 sm:grid-cols-[1fr_1.3fr_150px_auto] sm:items-end sm:px-6"
+            style={{ borderColor: "var(--border)" }}
+          >
+            <label className="grid gap-1.5 text-xs font-medium" style={{ color: "var(--muted-foreground)" }}>
+              Nome
+              <input name="name" placeholder="Nome do cliente" className="h-10 rounded-xl border px-3 text-sm font-normal outline-none" style={{ background: "var(--muted)", borderColor: "var(--border)", color: "var(--foreground)" }} />
+            </label>
+            <label className="grid gap-1.5 text-xs font-medium" style={{ color: "var(--muted-foreground)" }}>
+              E-mail de acesso
+              <input name="email" type="email" required placeholder="cliente@email.com" className="h-10 rounded-xl border px-3 text-sm font-normal outline-none" style={{ background: "var(--muted)", borderColor: "var(--border)", color: "var(--foreground)" }} />
+            </label>
+            <label className="grid gap-1.5 text-xs font-medium" style={{ color: "var(--muted-foreground)" }}>
+              Validade
+              <select name="days" defaultValue="30" className="h-10 rounded-xl border px-3 text-sm font-normal outline-none" style={{ background: "var(--muted)", borderColor: "var(--border)", color: "var(--foreground)" }}>
+                <option value="7">7 dias</option><option value="30">30 dias</option><option value="90">90 dias</option><option value="365">1 ano</option>
+              </select>
+            </label>
+            <button type="submit" disabled={grantPending} className="h-10 rounded-xl bg-purple-600 px-5 text-sm font-semibold text-white transition hover:bg-purple-500 disabled:opacity-60">
+              {grantPending ? "Salvando…" : "Liberar acesso"}
+            </button>
+            {grantMessage && <p role="status" className="text-sm sm:col-span-4" style={{ color: "var(--muted-foreground)" }}>{grantMessage}</p>}
+          </form>
+
           {/* search + filter */}
           <div
-            className="flex flex-col gap-3 border-b px-6 py-4 sm:flex-row"
+            className="flex flex-col gap-3 border-b px-5 py-4 sm:flex-row sm:px-6"
             style={{ borderColor: "var(--border)" }}
           >
             <input
@@ -346,7 +401,7 @@ export function AdminDashboard({ data }: { data: AdminDashboardData }) {
               placeholder="Buscar por nome ou e-mail…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="h-9 flex-1 rounded-xl border px-3 text-sm outline-none transition focus:ring-2"
+              className="h-10 min-w-0 flex-1 rounded-xl border px-3 text-sm outline-none transition focus:ring-2"
               style={{
                 background: "var(--muted)",
                 borderColor: "var(--border)",
@@ -358,7 +413,7 @@ export function AdminDashboard({ data }: { data: AdminDashboardData }) {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value as typeof statusFilter)}
-              className="h-9 rounded-xl border px-3 text-sm outline-none"
+              className="h-10 rounded-xl border px-3 text-sm outline-none sm:min-w-44"
               style={{
                 background: "var(--muted)",
                 borderColor: "var(--border)",
@@ -373,7 +428,8 @@ export function AdminDashboard({ data }: { data: AdminDashboardData }) {
           </div>
 
           {/* table */}
-          <Table>
+          <div className="overflow-x-auto">
+            <Table className="min-w-[980px]">
             <TableHeader>
               <TableRow style={{ background: "var(--muted)" }}>
                 <TableHead className="px-6" style={{ color: "var(--muted-foreground)" }}>Cliente</TableHead>
@@ -458,7 +514,8 @@ export function AdminDashboard({ data }: { data: AdminDashboardData }) {
                 </TableRow>
               )}
             </TableBody>
-          </Table>
+            </Table>
+          </div>
         </section>
       </TabsContent>
     </Tabs>

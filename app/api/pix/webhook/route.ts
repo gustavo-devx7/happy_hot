@@ -61,14 +61,29 @@ export async function POST(request: NextRequest) {
             `INSERT INTO customers (email, name, transaction_id, status, amount_cents)
              VALUES ($1, $2, $3, $4, $5)
              ON CONFLICT (transaction_id) DO UPDATE SET
-             email = $1, name = $2, status = $4, amount_cents = $5`,
-            [data.buyer.email, data.buyer.name ?? null, transactionId, status, data.total_amount]
+             email = EXCLUDED.email, name = EXCLUDED.name, status = EXCLUDED.status,
+             amount_cents = EXCLUDED.amount_cents, created_at = CURRENT_TIMESTAMP`,
+            [data.buyer.email.trim().toLowerCase(), data.buyer.name ?? null, transactionId, status, data.total_amount]
           )
         } catch (error) {
           console.error("Erro ao salvar cliente no banco de dados:", error)
+          return NextResponse.json({ error: "Falha ao salvar pagamento." }, { status: 500 })
         }
       } else {
-        console.warn(`TransaÃ§Ã£o paga sem email do comprador: ${transactionId}`)
+        try {
+          const updated = await execute(
+            `UPDATE customers SET status = $1, amount_cents = $2, created_at = CURRENT_TIMESTAMP
+             WHERE transaction_id = $3`,
+            [status, data.total_amount, transactionId]
+          )
+          if (!updated) {
+            console.error(`Pagamento sem e-mail e sem registro pendente: ${transactionId}`)
+            return NextResponse.json({ error: "Cliente do pagamento não encontrado." }, { status: 500 })
+          }
+        } catch (error) {
+          console.error("Erro ao atualizar pagamento no banco de dados:", error)
+          return NextResponse.json({ error: "Falha ao salvar pagamento." }, { status: 500 })
+        }
       }
     }
 
@@ -77,7 +92,7 @@ export async function POST(request: NextRequest) {
       console.log(`TransaÃ§Ã£o criada (pendente): ${transactionId}`)
     }
 
-    // Retorna 200 para confirmar recebimento do webhook
+    // Confirm receipt only after the paid transaction has been persisted.
     return NextResponse.json({
       received: true,
       event,
@@ -86,7 +101,6 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     console.error("Erro no webhook:", error)
-    // Retorna 200 mesmo com erro para evitar reenvios da BuckPay
-    return NextResponse.json({ received: true, error: "Erro ao processar" })
+    return NextResponse.json({ error: "Erro ao processar webhook" }, { status: 500 })
   }
 }

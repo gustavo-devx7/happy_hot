@@ -1,7 +1,9 @@
 "use client"
 
-import { useTheme } from "next-themes"
+import { useTheme } from "@/components/theme-provider"
 import { useEffect, useState } from "react"
+import Link from "next/link"
+import { Moon, Sun } from "lucide-react"
 import { logoutAdmin } from "@/app/admin/actions"
 import { AdminDashboard } from "@/app/admin/(protected)/admin-dashboard"
 import type { AdminDashboardData } from "@/lib/admin-metrics"
@@ -20,22 +22,12 @@ function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      aria-label="Alternar tema"
-      className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/8 px-3 py-1.5 text-[11px] tracking-wide text-white/75 transition hover:bg-white/14"
+      type="button"
+      aria-label={isDark ? "Ativar tema claro" : "Ativar tema escuro"}
+      title={isDark ? "Ativar tema claro" : "Ativar tema escuro"}
+      className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/8 text-white/80 transition hover:bg-white/14 hover:text-white"
     >
-      <span
-        className="relative inline-block h-[18px] w-8 flex-shrink-0 rounded-full transition-colors duration-300"
-        style={{ background: isDark ? "#2b1e30" : "rgba(255,255,255,0.2)" }}
-      >
-        <span
-          className="absolute top-[2px] h-3.5 w-3.5 rounded-full transition-all duration-300"
-          style={{
-            left: isDark ? "calc(100% - 18px)" : "2px",
-            background: isDark ? "#951ec9" : "#fff",
-          }}
-        />
-      </span>
-      {isDark ? "Modo claro" : "Modo escuro"}
+      {isDark ? <Sun aria-hidden="true" size={18} /> : <Moon aria-hidden="true" size={18} />}
     </button>
   )
 }
@@ -51,19 +43,19 @@ export function AdminPageClient({
 }) {
   return (
     <main
-      className="mainPageCliente"
+      className="min-h-screen"
       style={{ background: "var(--background)" }}
     >
       {/* ── wrapper centralizado ── */}
-      <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="flex flex-col gap-6">
+      <div className="mx-auto w-full max-w-[1480px] px-4 py-6 sm:px-6 lg:px-10 lg:py-10">
+        <div className="flex flex-col gap-8">
 
           {/* ── header card ── */}
           <div
-            className="relative overflow-hidden rounded-2xl"
+            className="relative overflow-hidden rounded-[28px]"
             style={{
               background: "linear-gradient(135deg, #180f1b 0%, #161018 100%)",
-              boxShadow: "0 8px 32px rgba(0,0,0,0.35)",
+              boxShadow: "0 18px 50px rgba(24,15,27,0.18)",
             }}
           >
             {/* glow decorativo */}
@@ -76,15 +68,18 @@ export function AdminPageClient({
             />
 
             {/* ── topbar: badge + controles ── */}
-            <div className="relative flex items-center justify-between border-b border-white/[0.07] px-6 py-3 sm:px-8">
+            <div className="relative flex flex-col gap-4 border-b border-white/[0.07] px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-8">
               <img src="/images/happy-hot-logo.svg" alt="Happy Hot Admin" className="h-8 w-36 object-contain object-left" />
 
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                <Link href="/admin/modelos" className="inline-flex h-9 items-center rounded-xl bg-purple-600 px-4 text-xs font-semibold text-white transition hover:bg-purple-500">
+                  Gerenciar modelos
+                </Link>
                 <ThemeToggle />
                 <form action={logoutAdmin}>
                   <button
                     type="submit"
-                    className="inline-flex h-8 items-center justify-center rounded-lg border border-white/10 bg-white/6 px-4 text-xs font-medium text-white/80 transition hover:bg-white/12 hover:text-white"
+                    className="inline-flex h-9 items-center justify-center rounded-xl border border-white/10 bg-white/6 px-4 text-xs font-medium text-white/80 transition hover:bg-white/12 hover:text-white"
                   >
                     Sair
                   </button>
@@ -93,11 +88,12 @@ export function AdminPageClient({
             </div>
 
             {/* ── headline ── */}
-            <div className="relative px-6 py-7 sm:px-8">
-              <h1 className="text-2xl font-light tracking-tight text-white sm:text-[1.75rem] sm:leading-snug">
+            <div className="relative px-5 py-8 sm:px-8 sm:py-10 lg:py-12">
+              <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.24em] text-purple-300">Visão do negócio</p>
+              <h1 className="max-w-5xl text-3xl font-medium tracking-tight text-white sm:text-4xl sm:leading-snug">
                 Receita, clientes e recorrência em um único painel.
               </h1>
-              <p className="mt-2 text-sm leading-relaxed text-white/45">
+              <p className="mt-2 max-w-3xl text-sm leading-relaxed text-white/55">
                 Dados agregados por e-mail · leitura rápida da base · status de acesso · histórico de pagamentos.
               </p>
             </div>

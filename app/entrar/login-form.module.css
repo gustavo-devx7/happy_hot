@@ -1,0 +1,32 @@
+.form { display: grid; gap: 18px; }
+.field { display: grid; gap: 9px; }
+.field label { color: #e7e2ea; font-size: 13px; font-weight: 600; }
+.input {
+  width: 100%;
+  height: 50px;
+  padding: 0 14px;
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 11px;
+  outline: none;
+  color: #fff;
+  background: #17151a;
+  font: inherit;
+  font-size: 14px;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+.input::placeholder { color: #77717c; }
+.input:focus { border-color: #a333d4; box-shadow: 0 0 0 3px rgba(163,51,212,.15); }
+.error { margin: 0; color: #ff8f98; font-size: 13px; line-height: 1.5; }
+.button {
+  height: 50px;
+  border: 0;
+  border-radius: 11px;
+  color: #fff;
+  background: linear-gradient(105deg, #8c20c8, #b334f3);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 150ms ease, transform 150ms ease;
+}
+.button:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.button:disabled { cursor: wait; opacity: .65; transform: none; }

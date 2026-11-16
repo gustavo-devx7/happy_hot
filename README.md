@@ -11,7 +11,7 @@ O projeto foi pensado para este fluxo:
 3. O pagamento é criado via API.
 4. O webhook confirma o pagamento.
 5. O gateway entrega a comunicação do pagamento.
-6. O login valida o e-mail pago no Supabase.
+6. O login valida o e-mail pago no Neon/PostgreSQL.
 7. A área `/plataforma` é liberada apenas para usuários com sessão válida.
 
 ## Stack
@@ -98,6 +98,12 @@ npm run lint
 npm run build
 ```
 
+## Cadastro de modelos
+
+O painel em `/admin/modelos` permite cadastrar e editar modelos, controlar se aparecem na plataforma e informar os caminhos das capas, fotos e vÃ­deos. Os arquivos devem existir em `public` e ser publicados com um deploy; os dados dos modelos ficam no Neon e podem ser alterados pelo painel sem novo commit.
+
+Na primeira implantaÃ§Ã£o, rode `node scripts/setup-db.js` para criar a tabela `model_profiles`. A Mel Santos existente continua vindo da rota atual; os novos cadastros usam pÃ¡ginas geradas pelos dados do banco. Configure `ADMIN_PASSWORD` no ambiente para proteger o painel.
+
 ## Deploy
 
 O deploy principal está pensado para Vercel.
@@ -108,6 +114,7 @@ Antes de publicar, confirme:
 - webhook do gateway apontando para `/api/pix/webhook`
 - variáveis do Neon/PostgreSQL e da BuckPay configuradas
 - gateway de pagamento configurado
+- execute `node scripts/setup-db.js` uma vez para aplicar a migração que permite pagamentos recorrentes por e-mail
 
 ## Observações
 
