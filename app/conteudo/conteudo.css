@@ -1213,6 +1213,78 @@ video {
 }
 
 /* PIX Content */
+.pix-bank-select {
+    padding: 22px 20px 16px;
+}
+
+.pix-bank-select h3 {
+    margin: 0;
+    color: #25202a;
+    font-size: 19px;
+    text-align: center;
+}
+
+.pix-bank-select > p {
+    margin: 7px 0 16px;
+    color: #77717d;
+    font-size: 13px;
+    text-align: center;
+}
+
+.pix-bank-search {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 10px;
+    padding: 0 12px;
+    border: 1px solid #e5e1e8;
+    border-radius: 10px;
+    color: #77717d;
+}
+
+.pix-bank-search input {
+    width: 100%;
+    height: 44px;
+    border: 0;
+    outline: 0;
+    color: #302b34;
+    background: transparent;
+    font: inherit;
+}
+
+.pix-bank-list {
+    max-height: min(42vh, 330px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.pix-bank-option {
+    display: flex;
+    width: 100%;
+    min-height: 52px;
+    align-items: center;
+    gap: 12px;
+    padding: 7px 8px;
+    border: 0;
+    border-bottom: 1px solid #f0edf2;
+    color: #302b34;
+    background: #fff;
+    text-align: left;
+    font: 600 14px "Montserrat", sans-serif;
+    cursor: pointer;
+}
+
+.pix-bank-option:hover, .pix-bank-option:focus-visible { background: #faf6fc; }
+.pix-bank-mark { display: grid; width: 34px; height: 34px; flex: 0 0 34px; place-items: center; border-radius: 50%; color: #60017b; background: #f2e6f6; font-weight: 800; }
+.pix-bank-arrow { margin-left: auto; color: #9a91a0; font-size: 24px; }
+.pix-bank-empty { padding: 16px; color: #77717d; text-align: center; font-size: 13px; }
+.pix-bank-skip { display: block; margin: 12px auto 0; padding: 8px 12px; border: 0; color: #65077e; background: transparent; font: 600 13px "Montserrat", sans-serif; cursor: pointer; }
+.pix-ready { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; padding: 12px; border-radius: 10px; color: #345a43; background: #eef8f0; font-size: 13px; line-height: 1.45; }
+.pix-ready strong { font-size: 15px; }
+.pix-copy-again { width: 100%; min-height: 44px; margin-bottom: 14px; }
+
+.pix-content > .pix-bank-skip { margin: 0 auto 10px; }
+
 .pix-content {
     padding: 20px;
 }

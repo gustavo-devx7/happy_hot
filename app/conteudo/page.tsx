@@ -38,7 +38,10 @@ export default function PrivacyPage() {
 
     // PIX Modal states
     const [pixModalOpen, setPixModalOpen] = useState(false)
-    const [pixStep, setPixStep] = useState<"form" | "loading" | "pix" | "success" | "error">("form")
+    const [pixStep, setPixStep] = useState<"form" | "loading" | "bank" | "pix" | "success" | "error">("form")
+    const [bankSearch, setBankSearch] = useState("")
+    const [pixCopied, setPixCopied] = useState(false)
+    const [showPixQr, setShowPixQr] = useState(true)
     const [pixPlanLabel, setPixPlanLabel] = useState("")
     const [pixAmount, setPixAmount] = useState(0)
     const [pixFormName, setPixFormName] = useState("")
@@ -125,7 +128,7 @@ export default function PrivacyPage() {
                             : `data:image/png;base64,${data.qrCodeBase64}`
                         : data.qrCode
                 )
-                setPixStep("pix")
+                setPixStep("bank")
 
                 let remaining = 15 * 60
                 pixCountdownRef.current = window.setInterval(() => {
@@ -146,7 +149,36 @@ export default function PrivacyPage() {
     }
 
     const copiarPix = () => {
-        navigator.clipboard.writeText(pixCode)
+        if (!navigator.clipboard?.writeText) {
+            setPixCopied(false)
+            return
+        }
+        navigator.clipboard.writeText(pixCode).then(() => setPixCopied(true)).catch(() => setPixCopied(false))
+    }
+
+    const bancos = ["Nubank", "Banco Inter", "Itaú", "Bradesco", "Banco do Brasil", "Santander", "Caixa Econômica Federal", "C6 Bank", "Mercado Pago", "PicPay", "BTG Pactual", "Banco PAN", "Next", "Neon", "Will Bank", "Sicredi", "Sicoob", "Banrisul", "Banco Original", "PagBank", "iti", "Outros bancos"]
+    const bancosFiltrados = bancos.filter((banco) => banco.toLowerCase().includes(bankSearch.trim().toLowerCase()))
+
+    const selecionarBanco = (banco: string) => {
+        if (navigator.clipboard?.writeText) {
+            navigator.clipboard.writeText(pixCode).then(() => setPixCopied(true)).catch(() => setPixCopied(false))
+        } else {
+            setPixCopied(false)
+        }
+        setPixStep("pix")
+        const appPackages: Record<string, string> = {
+            "Nubank": "com.nu.production", "Banco Inter": "br.com.intermedium", "Itaú": "com.itau",
+            "Bradesco": "com.bradesco", "Banco do Brasil": "br.com.bb.android", "Santander": "br.com.santander.app",
+            "Caixa Econômica Federal": "br.gov.caixa", "C6 Bank": "com.c6bank.app", "Mercado Pago": "com.mercadopago.wallet",
+            "PicPay": "com.picpay", "BTG Pactual": "com.btgpactual.digital", "Banco PAN": "br.com.bancopan",
+            "Next": "com.br.next", "Neon": "com.neon", "Will Bank": "br.com.willbank", "Sicredi": "br.com.sicredi",
+            "Sicoob": "br.com.sicoobnet", "Banrisul": "br.com.banrisul", "Banco Original": "br.com.original",
+            "PagBank": "br.com.uol.ps", "iti": "com.itau.iti"
+        }
+        const packageName = appPackages[banco]
+        if (packageName && /Android/i.test(navigator.userAgent)) {
+            window.location.href = `intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=${packageName};end`
+        }
     }
 
     useEffect(() => {
@@ -574,12 +606,24 @@ export default function PrivacyPage() {
                                 </div>
                             )}
 
+                            {pixStep === "bank" && (
+                                <div className="pix-bank-select">
+                                    <h3>Qual banco você prefere utilizar?</h3>
+                                    <p>Escolha seu banco. Vamos preparar o Pix para você copiar.</p>
+                                    <div className="pix-bank-search"><span aria-hidden="true">⌕</span><input aria-label="Pesquisar banco" placeholder="Pesquisar banco" value={bankSearch} onChange={(e) => setBankSearch(e.target.value)} /></div>
+                                    <div className="pix-bank-list" role="list" aria-label="Bancos disponíveis">
+                                        {bancosFiltrados.map((banco) => <button type="button" key={banco} className="pix-bank-option" onClick={() => selecionarBanco(banco)}><span className="pix-bank-mark">{banco.trim().slice(0, 1).toUpperCase()}</span><span>{banco.trim()}</span><span className="pix-bank-arrow">›</span></button>)}
+                                        {bancosFiltrados.length === 0 && <p className="pix-bank-empty">Nenhum banco encontrado.</p>}
+                                    </div>
+                                    <button type="button" className="pix-bank-skip" onClick={() => selecionarBanco("Outros bancos")}>Continuar sem escolher</button>
+                                </div>
+                            )}
+
                             {pixStep === "pix" && (
                                 <div className="pix-content">
-                                    <p className="pix-scan-label">Escaneie o QR Code para pagar</p>
-                                    <div className="pix-qr-wrapper">
-                                        <img src={pixQrUrl} alt="QR Code PIX" className="pix-qr" />
-                                    </div>
+                                    <button type="button" onClick={copiarPix} className="pix-copy pix-copy-again">{pixCopied ? "Copiar código novamente" : "Copiar código Pix"}</button>
+                                    <button type="button" className="pix-bank-skip" onClick={() => setShowPixQr(!showPixQr)}>{showPixQr ? "Ocultar QR Code" : "Mostrar QR Code"}</button>
+                                    {showPixQr && <><p className="pix-scan-label">Escaneie o QR Code para pagar</p><div className="pix-qr-wrapper"><img src={pixQrUrl} alt="QR Code PIX" className="pix-qr" /></div></>}
                                     <div className="pix-code-box">
                                         <span className="pix-code">{pixCode}</span>
                                         <button onClick={copiarPix} className="pix-copy">📋 Copiar</button>
@@ -588,6 +632,7 @@ export default function PrivacyPage() {
                                         <div className="pix-blink" />
                                         <span>Aguardando pagamento...</span>
                                     </div>
+                                    <button type="button" className="pix-bank-skip" onClick={() => { setBankSearch(""); setPixStep("bank") }}>Escolher outro banco</button>
                                     <p className="pix-expiry">QR Code expira em <strong>{pixTimer}</strong></p>
                                 </div>
                             )}
